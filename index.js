@@ -81,24 +81,19 @@ app.post("/posts", (req,res)=>{
 
 //PATCH a post 
 
-app.patch("/posts/:id", (req, res)=> {
+app.patch("/posts/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const editBlog = posts.find((post) => post.id === id);
+  const post = posts.find((post) => post.id === id);
   if (!post) return res.status(404).json({ message: "Post not found" });
-  const patchBlog = {
-    id : id,
-    title: req.body.title || editBlog.title,
-    content: req.body.content || editBlog.content,
-    author : req.body.author || editBlog.author,
-    date : new Date()
 
-  }
+  post.title = req.body.title || post.title;
+  post.content = req.body.content || post.content;
+  post.author = req.body.author || post.author;
+  post.date = new Date();
 
-  const patchIndex = posts.find((post) => post.id === id);
-  posts[patchIndex] = patchBlog;
-  res.json(posts).status(200);
-
+  res.status(200).json(posts);
 });
+
 
 // DELETE a specific post 
 
